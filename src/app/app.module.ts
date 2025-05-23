@@ -22,6 +22,9 @@ import { EmployeeEffects } from './store/employee.effects';
 // Services
 import { EmployeeService } from './services/employee.service';
 
+//Routing Module
+import { AppRoutingModule } from './app.routing.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +36,7 @@ import { EmployeeService } from './services/employee.service';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AgGridModule,
+    AppRoutingModule,
     StoreModule.forRoot({ employees: employeeReducer }),
     EffectsModule.forRoot([EmployeeEffects]),
     StoreDevtoolsModule.instrument({
