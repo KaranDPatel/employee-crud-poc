@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title mb-0">
+      {{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}
+    </h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <!-- First Name -->
+        <div class="col-md-6 mb-3">
+          <label for="firstName" class="form-label">First Name *</label>
+          <input type="text" class="form-control" id="firstName" formControlName="firstName" [class.is-invalid]="isFieldInvalid('firstName')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('firstName')">First name is required</div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-md-6 mb-3">
+          <label for="lastName" class="form-label">Last Name *</label>
+          <input type="text" class="form-control" id="lastName" formControlName="lastName" [class.is-invalid]="isFieldInvalid('lastName')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('lastName')">Last name is required</div>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6 mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input type="email" class="form-control" id="email" formControlName="email" [class.is-invalid]="isFieldInvalid('email')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+            <span *ngIf="employeeForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="employeeForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <!-- Department -->
+        <div class="col-md-6 mb-3">
+          <label for="department" class="form-label">Department *</label>
+          <select class="form-select" id="department" formControlName="department" [class.is-invalid]="isFieldInvalid('department')">
+            <option value="">Select Department</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing">Marketing</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Sales">Sales</option>
+            <option value="Operations">Operations</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('department')">Department is required</div>
+        </div>
+
+        <!-- Position -->
+        <div class="col-md-6 mb-3">
+          <label for="position" class="form-label">Position *</label>
+          <input type="text" class="form-control" id="position" formControlName="position" [class.is-invalid]="isFieldInvalid('position')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('position')">Position is required</div>
+        </div>
+
+        <!-- Salary -->
+        <div class="col-md-6 mb-3">
+          <label for="salary" class="form-label">Salary *</label>
+          <input type="number" class="form-control" id="salary" formControlName="salary" min="0" step="1000" [class.is-invalid]="isFieldInvalid('salary')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('salary')">
+            <span *ngIf="employeeForm.get('salary')?.errors?.['required']">Salary is required</span>
+            <span *ngIf="employeeForm.get('salary')?.errors?.['min']">Salary must be greater than 0</span>
+          </div>
+        </div>
+
+        <!-- Hire Date -->
+        <div class="col-md-6 mb-3">
+          <label for="hireDate" class="form-label">Hire Date *</label>
+          <input type="date" class="form-control" id="hireDate" formControlName="hireDate" [class.is-invalid]="isFieldInvalid('hireDate')" />
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('hireDate')">Hire date is required</div>
+        </div>
+
+        <!-- Active -->
+        <div class="col-md-6 mb-3">
+          <div class="form-check mt-4">
+            <input class="form-check-input" type="checkbox" id="isActive" formControlName="isActive" />
+            <label class="form-check-label" for="isActive">Active Employee</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="employeeForm.invalid || (loading$ | async)">
+          <span *ngIf="loading$ | async" class="spinner-border spinner-border-sm me-2"></span>
+          {{ isEditMode ? 'Update Employee' : 'Add Employee' }}
+        </button>
+
+        <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading$ | async">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
