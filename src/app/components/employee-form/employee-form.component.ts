@@ -102,7 +102,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(EmployeeActions.addEmployee({ employee: employeeData }));
     }
+
+    this.resetForm();
   }
+}
+
+private resetForm(): void {
+  this.employeeForm.reset();
+  this.employeeForm.patchValue({ isActive: true }); // Set default active state
+  this.isEditMode = false;
+  this.store.dispatch(EmployeeActions.clearSelectedEmployee());
 }
 
   onCancel(): void {

@@ -25,6 +25,10 @@ import { EmployeeService } from './services/employee.service';
 //Routing Module
 import { AppRoutingModule } from './app.routing.module';
 
+//MSAL Module
+import { MsalModule, MsalRedirectComponent, MsalGuard, MsalService, MsalBroadcastService } from '@azure/msal-angular';
+import { PublicClientApplication, InteractionType } from '@azure/msal-browser';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +36,25 @@ import { AppRoutingModule } from './app.routing.module';
     EmployeeFormComponent
   ],
   imports: [
+    MsalModule.forRoot(
+      new PublicClientApplication({
+        auth: {
+          clientId: '{}', //Insert the clinet ID
+          authority: 'https://login.microsoftonline.com/{}', //Insert the tenant ID
+          redirectUri: 'http://localhost:4200/'
+        }
+      }),
+      {
+        interactionType: InteractionType.Redirect,
+        authRequest: {
+          scopes: ['user.read']
+        }
+      },
+      {
+        interactionType: InteractionType.Redirect,
+        protectedResourceMap: new Map()
+      }
+    ),
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
@@ -50,7 +73,7 @@ import { AppRoutingModule } from './app.routing.module';
       }
     })
   ],
-  providers: [EmployeeService],
-  bootstrap: [AppComponent]
+  providers: [EmployeeService, MsalGuard, MsalService, MsalBroadcastService],
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }
